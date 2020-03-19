@@ -58,7 +58,7 @@ input{
 	border:none;
 	background: none;
 }
-img{
+img,image{
 	width: 100%;
 	height: auto;
 	object-fit: cover;
