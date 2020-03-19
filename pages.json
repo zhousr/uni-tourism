@@ -2,25 +2,31 @@
   "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
     {
       "path": "pages/index/my",
-			"style": {
-				"navigationBarTitleText": "我的小铺",//设置页面标题文字
-				"navigationBarBackgroundColor":"#FFB301"//导航栏背景颜色
-				}
+      "style": {
+        "navigationBarTitleText": "我的小铺", //设置页面标题文字
+        "navigationBarBackgroundColor": "#FFB301" //导航栏背景颜色
+      }
     },
     {
       "path": "pages/index/aDmo",
-			"style": {
-				"navigationBarTitleText": "首页",//设置页面标题文字
-				"navigationBarBackgroundColor":"#555",//导航栏背景颜色
-				"enablePullDownRefresh":true,//开启下拉刷新
-				"backgroundTextStyle":"dark"//下拉 loading 的样式，仅支持 dark/light 
+      "style": {
+        "navigationBarTitleText": "首页", //设置页面标题文字
+        "navigationBarBackgroundColor": "#555", //导航栏背景颜色
+        "enablePullDownRefresh": true, //开启下拉刷新
+        "backgroundTextStyle": "dark" //下拉 loading 的样式，仅支持 dark/light 
+      }
+    },
+    {
+      "path": "pages/explainPopup/index",
+      "style": {
+        "navigationBarTitleText": "弹窗" //设置页面标题文字
       }
     }
   ],
   "globalStyle": {
-    "navigationBarTextStyle": "white",//导航栏标题颜色，仅支持 black/white
-    "navigationBarTitleText": "旅游网",//导航栏标题文字内容 
-    "navigationBarBackgroundColor": "#F8f8f8",//导航栏背景颜色
-		"navigationStyle":"default"//状态栏样式，仅支持 default/custom。 
+    "navigationBarTextStyle": "white", //导航栏标题颜色，仅支持 black/white
+    "navigationBarTitleText": "旅游网", //导航栏标题文字内容 
+    "navigationBarBackgroundColor": "#F8f8f8", //导航栏背景颜色
+    "navigationStyle": "default" //状态栏样式，仅支持 default/custom。 
   }
 }

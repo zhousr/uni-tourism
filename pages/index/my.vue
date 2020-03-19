@@ -1,6 +1,6 @@
 <template>
   <div class="my-page">
-    <div class="page-header flex between">
+    <div class="header flex between">
       <div class="flex">
         <img class="header-avatar" src="/static/logo.png" mode="aspectFill">
         <div class="a">
@@ -34,14 +34,38 @@
       <p>共有商品：3件</p>
       <div class="addGoods-btn"><text class="mr">+</text> 添加商品</div>
     </div>
-    <div  class="cate-box flex">
+    <div class="cate-box flex">
       <p class="cate-li" v-for="(item,index) in nav" :key="index" :class="{'active':index === activeIndex}">{{item}}</p>
     </div>
     <div class="dividing-line relative"></div>
+    <view class="scenicSpot flex">
+      <view class="sceneryImg">
+        <image src="../../static/image/sceneryImg.jpg" mode="aspectFill"></image>
+        <text>限时特惠</text>
+      </view>
+      <view class="sceneryDesc">
+        <view class="desc1">
+          延吉起止·长白山北坡一日游，限时特价17800元。
+        </view>
+        <view class="desc2">
+          延吉出发长白山北坡一日游纯玩自由行免费排队特惠出游
+        </view>
+        <view class="desc3">
+          <text class="text1">分享</text>
+          <text class="text2">最高可获得<text>3.5</text>元佣金</text>
+        </view>
+        <view class="desc4">
+          <text class="text3">¥17800</text>
+          <text class="text4">¥19800</text>
+        </view>
+      </view>
+  </view>
+  <pop-up/>
   </div>
 </template>
 
 <script>
+import popUp from '../explainPopup/index'
   export default {
     data() {
       return {
@@ -52,131 +76,237 @@
     },
     onLoad() {
     },
+    components:{popUp},
     methods: {
     }
   }
 </script>
 
 <style>
-.page-header{
-  background: #FFB301;
-  border-radius: 0 0 45rpx 45rpx;
-  padding: 23rpx 13rpx 41rpx 19rpx;
-}
-.header-avatar{
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 50%;
-  margin-right: 10rpx;
-}
-.header-userName{
-  font-family: PingFangSC-Semibold;
-  line-height: 49rpx;
-  font-size: 35rpx;
-  color: rgba(0,0,0,0.85);
-}
-.heaer-userGrade-box{
-  background-image: linear-gradient(95deg, #7E7A7B 0%, #292222 99%);
-  border-radius: 20.5rpx;
-  font-family: Helvetica;
-  font-size: 16rpx;
-  color: #FCE1A2;
-  padding: 5rpx 8rpx 5rpx 11rpx;
-  margin-right: 10rpx;
-}
-.heaer-userGrade-box:last-child{
-  background: rgba(#F59828,0.64);
-  color:#fff;
-}
-.heaer-userGrade-icon{
-  width: 23rpx;
-}
-.heaer-userGrade-text{
-  padding: 0 4rpx;
-}
+  .header{
+    background: #FFB301;
+    border-radius: 0 0 45rpx 45rpx;
+    padding: 23rpx 13rpx 41rpx 19rpx;
+  }
+  .header-avatar{
+    width: 120rpx;
+    height: 120rpx;
+    border-radius: 50%;
+    margin-right: 10rpx;
+  }
+  .header-userName{
+    font-family: PingFangSC-Semibold;
+    line-height: 49rpx;
+    font-size: 35rpx;
+    color: rgba(0,0,0,0.85);
+  }
+  .heaer-userGrade-box{
+    background-image: linear-gradient(95deg, #7E7A7B 0%, #292222 99%);
+    border-radius: 20.5rpx;
+    font-family: Helvetica;
+    font-size: 16rpx;
+    color: #FCE1A2;
+    padding: 5rpx 8rpx 5rpx 11rpx;
+    margin-right: 10rpx;
+  }
+  .heaer-userGrade-box:last-child{
+    background: rgba(#F59828,0.64);
+    color:#fff;
+  }
+  .heaer-userGrade-icon{
+    width: 23rpx;
+  }
+  .heaer-userGrade-text{
+    padding: 0 4rpx;
+  }
 
-.header-shareBtn{
-  padding: 2rpx 8rpx;
-  background: #FFFFFF;
-  box-shadow: 2rpx 3rpx 4rpx 0 rgba(0,0,0,0.50), inset 1rpx 2rpx 3rpx 0 rgba(0,0,0,0.50);
-  border-radius: 28.5rpx;
-  font-family: STHeiti;
-  font-size: 28rpx;
-  color: #FFAF00;
-}
-.header-shareBtn:last-child{
-  margin-top: 26rpx;
-}
-.header-shareBtn-img{
-  width: 42rpx;
-  margin-right: 2rpx
-}
-.addGoods{
-  padding: 18rpx 24rpx 25rpx;
-  font-family: STHeiti;
-  font-size: 30rpx;
-  color: #000000;
-}
-.addGoods-btn{
-  background: #FFB301;
-  border-radius: 28.5rpx;
-  padding: 14rpx;
-}
-.addGoods-btn .mr{
-  margin-right: 1rpx;
-  font-size: 32rpx;
-}
+  .header-shareBtn{
+    padding: 2rpx 8rpx;
+    background: #FFFFFF;
+    box-shadow: 2rpx 3rpx 4rpx 0 rgba(0,0,0,0.50), inset 1rpx 2rpx 3rpx 0 rgba(0,0,0,0.50);
+    border-radius: 28.5rpx;
+    font-family: STHeiti;
+    font-size: 28rpx;
+    color: #FFAF00;
+  }
+  .header-shareBtn:last-child{
+    margin-top: 26rpx;
+  }
+  .header-shareBtn-img{
+    width: 42rpx;
+    margin-right: 2rpx
+  }
+  .addGoods{
+    padding: 18rpx 24rpx 25rpx;
+    font-family: STHeiti;
+    font-size: 30rpx;
+    color: #000000;
+  }
+  .addGoods-btn{
+    background: #FFB301;
+    border-radius: 28.5rpx;
+    padding: 14rpx;
+  }
+  .addGoods-btn .mr{
+    margin-right: 1rpx;
+    font-size: 32rpx;
+  }
 
-.cate-box{
-  padding: 24rpx;
-  overflow-x: scroll;
-  white-space: nowrap;
-  position: relative;
-}
-.cate-box::-webkit-scrollbar {
-  display: none;
-}
-.dividing-line::before,.dividing-line::after{
-  content:'';
-  display: block;
-  width: 50vw;
-  height: 4rpx;
-  position: absolute;
-  bottom: 0;
-  border-radius: 5rpx;
-  margin-bottom: 26rpx;
-}
-.dividing-line::before{
-  left: 0;
-  background-image: linear-gradient(270deg, #FFAE00 0%, #FFFFFF 100%);
-}
-.dividing-line::after{
-  right: 0;
-  background-image: linear-gradient(90deg, #FFAE00 0%, #FFFFFF 100%);
-}
-.cate-li{
-  padding: 0 18rpx 30rpx;
-  font-family: PingFangSC-Light;
-  font-size: 28rpx;
-  color: rgba(0,0,0,0.85);
-  position: relative;
-}
-.cate-li.active{
-  font-family: PingFangSC-Semibold;
-  font-size: 28rpx;
-  color: rgba(0,0,0,0.85);
-  font-weight: bold;
-}
-.cate-li.active::before{
-  content:'';
-  display: block;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 20rpx;
-  width: 64rpx;
-  height: 10rpx;
-  background-image: linear-gradient(90deg, #FFAE00 0%, #FFFFFF 100%, #FFFFFF 100%);
-  border-radius: 5rpx;
-}
+  .cate-box{
+    padding: 24rpx;
+    overflow-x: scroll;
+    white-space: nowrap;
+    position: relative;
+  }
+  .cate-box::-webkit-scrollbar {
+    display: none;
+  }
+  .dividing-line::before,.dividing-line::after{
+    content:'';
+    display: block;
+    width: 50vw;
+    height: 4rpx;
+    position: absolute;
+    bottom: 0;
+    border-radius: 5rpx;
+    margin-bottom: 26rpx;
+  }
+  .dividing-line::before{
+    left: 0;
+    background-image: linear-gradient(270deg, #FFAE00 0%, #FFFFFF 100%);
+  }
+  .dividing-line::after{
+    right: 0;
+    background-image: linear-gradient(90deg, #FFAE00 0%, #FFFFFF 100%);
+  }
+  .cate-li{
+    padding: 0 18rpx 30rpx;
+    font-family: PingFangSC-Light;
+    font-size: 28rpx;
+    color: rgba(0,0,0,0.85);
+    position: relative;
+  }
+  .cate-li.active{
+    font-family: PingFangSC-Semibold;
+    font-size: 28rpx;
+    color: rgba(0,0,0,0.85);
+    font-weight: bold;
+  }
+  .cate-li.active::before{
+    content:'';
+    display: block;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20rpx;
+    width: 64rpx;
+    height: 10rpx;
+    background-image: linear-gradient(90deg, #FFAE00 0%, #FFFFFF 100%, #FFFFFF 100%);
+    border-radius: 5rpx;
+  }
+  .scenicSpot{
+    width: calc(100% - 30rpx);
+    margin: 0 auto;
+    background: rgba(255,255,255,0.10);
+    box-shadow: 0 4rpx 15rpx 0 #D8D8D8;
+    border-radius: 12rpx;
+    height: auto;
+    margin: 25rpx auto;
+    padding: 23rpx 0 28rpx 27rpx;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .sceneryImg{
+    width: 240rpx;
+    height: 208rpx;
+    position: relative;
+    flex:none;
+  }  
+  .sceneryImg>image{
+    width: 100%;
+    height: 100%;
+    border-radius: 10rpx;
+  }
+  .sceneryImg>text{
+    position: absolute;
+    font-family: STHeiti;
+    font-size: 21rpx;
+    color: #000000;
+    background-image: linear-gradient(180deg, #F1E1B3 0%, #DFC07C 100%);
+    border-radius: 6rpx;
+    top: 15rpx;
+    left: 0;
+    padding: 5rpx 9rpx;
+  }
+  .sceneryDesc{
+    flex:none;
+    width: calc(100% - 240rpx);
+    height: 208rpx;
+    padding-left: 30rpx;
+    padding-right: 27rpx;
+    overflow: hidden;
+  }
+  .desc1{
+    height: 40rpx;
+    font-family: STHeiti;
+    font-size: 30rpx;
+    color: #000000;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .desc2{
+    font-family: STHeiti;
+    font-size: 24rpx;
+    color: rgba(0,0,0,0.50);
+    letter-spacing: 0.3rpx;
+    line-height: 30rpx;
+    margin: 9rpx 0;
+    height: 60rpx;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    white-space: pre-wrap;
+
+  }
+  .desc3>.text1{
+    background-image: linear-gradient(180deg, #ECD9B3 0%, #D5A85E 56%, #EFC378 100%);
+    border-radius: 18rpx;
+    font-family: STHeiti;
+    font-size: 22rpx;
+    color: #FFFFFF;
+    padding: 7rpx 12rpx;
+  }
+  .desc3>.text2{
+    font-family: STHeiti;
+    font-size: 22rpx;
+    color: rgba(0,0,0,0.50);
+    letter-spacing: 0;
+    line-height: 22rpx;
+    margin-left: 10rpx;
+  }
+  .desc3>.text2>text{
+    color: #000E0E;
+  }
+  .desc4{
+    margin-top: 14rpx;
+  }
+  .desc4>.text3{
+    font-family: LucidaGrande-Bold;
+    font-size: 32rpx;
+    color: #FF9000;
+  }
+  .desc4>.text4{
+    font-family: Times-Roman;
+    font-size: 30rpx;
+    color: rgba(0,0,0,0.50);
+    margin-left: 33rpx;
+  }
+  .delete{
+    height: 100%;
+    background: #FF0000;
+    flex:none;
+  }
 </style>
