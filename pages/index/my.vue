@@ -42,9 +42,9 @@
     <div class="dividing-line relative"></div>
     <!-- 商品 -->
     <view class="scenicSpot relative"  v-for="(item,index) in goodsArr" :key="index"
-        @touchstart="touchstart($event,index)"
+        @touchstart="touchstart($event,index)" @touchmove="touchmove($event,index)" @touchend="touchend($event,index)"
         :style="{'left':item.offsetX + 'px','transition':transition?'':'left 0.5s'}">
-      <div class="flex stretch between" @touchmove="touchmove($event,index)" @touchend="touchend($event,index)">
+      <div class="flex stretch between">
         <view class="sceneryImg relative">
           <image src="/static/logo.png" mode="aspectFill"></image>
           <text>限时特惠</text>
