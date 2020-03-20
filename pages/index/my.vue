@@ -43,7 +43,7 @@
     <!-- 商品 -->
     <view class="scenicSpot relative"  v-for="(item,index) in goodsArr" :key="index"
         @touchstart="touchstart($event,index)"
-        :style="{'left':item.offsetX + 'px','transition':item.moving?'':'left 0.3s'}">
+        :style="{'left':item.offsetX + 'px','transition':transition?'':'left 0.5s'}">
       <div class="flex stretch between" @touchmove="touchmove($event,index)" @touchend="touchend($event,index)">
         <view class="sceneryImg relative">
           <image src="/static/logo.png" mode="aspectFill"></image>
@@ -62,7 +62,7 @@
           </view>
         </view>
       </div>
-      <div class="del-btn flex center" :class="{'moving':item.moving}">删除</div>
+      <div class="del-btn flex center" :class="{'moving': item.offsetX !==0}">删除</div>
     </view>
     <!-- 弹窗 -->
     <my-popup v-if="popUpVisible" :visible.sync="popUpVisible" />
@@ -78,7 +78,7 @@ import myPopup from '../../components/myPopup'
         arr:['全部','酒店','景区门票','景区门票','景区门票','景区门票'],
         activeIndex:0,
         popUpVisible:false,
-        goodsArr:[{offsetX: 0, moving: false},{offsetX: 0, moving: false}],
+        goodsArr:[{offsetX: 0},{offsetX: 0}],
 
         startClientX:0,
         transition:false,
@@ -104,10 +104,10 @@ import myPopup from '../../components/myPopup'
         this.startClientX = e.changedTouches[0].clientX
       },
       touchmove(e,index){
+        this.transition = false
         let n = e.changedTouches[0].clientX - this.startClientX
         let offsetX = this.goodsArr[index].offsetX
         if(Math.abs(n)>=this.allOffset || Math.abs(n)>=this.allOffset) return
-        this.goodsArr[index].moving = true
         if(!this.isLeftoRight && n<= 0){
           this.goodsArr[index].offsetX = n
         }else if(this.isLeftoRight && n>= 0){
@@ -115,13 +115,13 @@ import myPopup from '../../components/myPopup'
         }
       },
       touchend(e,index){
-        if(e.changedTouches[0].clientX - this.startClientX > -25){
+        this.transition = true
+        let n = e.changedTouches[0].clientX - this.startClientX
+        if(!this.isLeftoRight && -n<25 || this.isLeftoRight && n>25){
           this.goodsArr[index].offsetX = 0
-          this.goodsArr[index].moving = false
           this.isLeftoRight = false
         }else{
           this.goodsArr[index].offsetX = -this.allOffset
-          this.goodsArr[index].moving = true
           this.isLeftoRight = true
         }
       },
