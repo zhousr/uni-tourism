@@ -81,10 +81,18 @@ import myPopup from '../../components/myPopup'
         goodsArr:[{offsetX: 0, moved: false},{offsetX: 0, moved: false}],
         startClientX:0,
         transition:false,
-        isLeftoRight:false
+        isLeftoRight:false,
+        allOffset:0
       }
     },
     onLoad() {
+    },
+    mounted(){
+      this.$nextTick(()=>{
+        uni.createSelectorQuery().select('.scenicSpot .del-btn').boundingClientRect(data => {
+          this.allOffset = data.width -5
+        }).exec();
+      })
     },
     components:{myPopup},
     methods: {
@@ -97,45 +105,29 @@ import myPopup from '../../components/myPopup'
       touchmove(e,index){
         let n = e.changedTouches[0].clientX - this.startClientX
         let offsetX = this.goodsArr[index].offsetX
-        const flag1 =!this.isLeftoRight && n<=0 && offsetX<=0 && offsetX>=-100
-        const flag2 = this.isLeftoRight && n>=0 && offsetX<=0 && offsetX>=-100
-        // if(offsetX<=100 || offsetX<=-100){
-        // console.log('终结   ',n,offsetX,flag1,flag2)
-        //   return ''
-        // }
-        if(flag1){
+        if(Math.abs(n)>=this.allOffset || Math.abs(n)>=this.allOffset) return
+        if(!this.isLeftoRight && n<= 0){
           this.goodsArr[index].offsetX = n
-        }else if(flag2){
-          this.goodsArr[index].offsetX = 100 - n
-        }else{
-          console.log('else',n,offsetX,flag1,flag2,this.goodsArr[index].offsetX,this.isLeftoRight)
+        }else if(this.isLeftoRight && n>= 0){
+          this.goodsArr[index].offsetX = -this.allOffset + n
         }
-        console.log(n,offsetX,flag1,flag2,this.goodsArr[index].offsetX,this.isLeftoRight)
+        if(this.goodsArr[index].offsetX){
+          this.goodsArr[index].moved = true
+        }
         this.transition = false
-        // this.goodsArr[index].moved = true
       },
       touchend(e,index){
-        uni.createSelectorQuery().select('.scenicSpot .del-btn').boundingClientRect(data => {
-          let offset = e.changedTouches[0].clientX - this.startClientX
-          let width = data.width
-          // this.goodsArr[index].offsetX = n
-          if(this.goodsArr[index].offsetX<0 && this.goodsArr[index].offsetX <60){
-          }
-          this.transition = true
-          // if(Math.abs(offset) >30 && offset<100){
-          //   this.offsetX = 100
-          // }else{
-          //   this.goodsArr[index].offsetX = -100
-          // }
-          if(offset> -30){
-            this.goodsArr[index].offsetX = 0
-            this.goodsArr[index].moved = false
-            this.isLeftoRight = true
-          }else{
-            this.goodsArr[index].offsetX = -100
-            this.isLeftoRight = true
-          }
-        }).exec();
+        let offset = e.changedTouches[0].clientX - this.startClientX
+        this.transition = true
+        if(offset> -30){
+          this.goodsArr[index].offsetX = 0
+          this.goodsArr[index].moved = false
+          this.isLeftoRight = false
+        }else{
+          this.goodsArr[index].offsetX = -this.allOffset
+          this.goodsArr[index].moved = true
+          this.isLeftoRight = true
+        }
       },
     }
   }
@@ -309,7 +301,7 @@ import myPopup from '../../components/myPopup'
     transition: right 0.3s;
   }
   .del-btn.moved{
-    right: -190rpx;
+    right: -200rpx;
     box-shadow: 0 4rpx 15rpx 0 #D8D8D8;
   }
   .sceneryDesc{
