@@ -1,11 +1,11 @@
 <template>
-  <view class="explainPopup flex center">
-    <view class="popupContainer">
+  <view class="explainPopup flex center" @click="close()">
+    <view class="popupContainer" @click.stop>
       <view class="popupTitle">如何添加商品</view>
       <view class="dividing-line"></view>
       <view class="contentArea">
         <view class="content">第一步：进入商城任意选择您想添加的商品进入详情</view>
-        <view class="content"><image src="/static/image/popup.png" mode="widthFix" class="explainImg"></image>
+        <view class="content"><image src="/static/popup.png" mode="widthFix" class="explainImg"></image>
         </view>
         <view class="content">第二步：在进入详情页后信息栏中有个图标按钮点击添加</view>
         <view class="content">第三步：添加成功后，返回个人店铺查看即可</view>
@@ -16,6 +16,26 @@
 </template>
 
 <script>
+  export default {
+    data() {
+      return {
+        title: 'Hello'
+      }
+    },
+    props: {
+      visible:{
+        type:Boolean,
+        default:true,
+      },
+    },
+    onLoad() {
+    },
+    methods: {
+      close(){
+        this.$emit('update:visible',false)
+      },
+    }
+  }
 </script>
 
 <style scoped>
@@ -26,6 +46,7 @@
     left: 0;
     top: 0;
     background-color: rgba(0,0,0,0.6);
+    z-index: 99;
   }
   .popupContainer{
     width: 621rpx;

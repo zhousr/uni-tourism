@@ -1,7 +1,18 @@
+button,
+input{
+  outline: none;
+  color: #000;
+	-webkit-tap-highlight-color: rgba(255, 0, 0, 0);
+	border:none;
+	background: none;
+}
+/*每个页面公共css */
 view{
   box-sizing: border-box;
 }
-
+ul,ol,li{
+  font-weight: normal;
+}
 page{
   font-size: 28rpx;
   color:#333;
@@ -9,24 +20,15 @@ page{
   font-family: PingFangSC-Regular,PingFang SC;
 }
 .bold{
-  font-family:PingFangSC-Medium,PingFang SC;
   font-weight:bold;
 }
 .c666{color:#666}
 .c999{color:#999}
 .fff{color:#fff}
-.pd032{padding: 0 32rpx;}
-.w686{width: 686rpx;margin-left: auto;margin-right: auto;}
-.fs24{font-size: 24rpx;}
-.fs26{font-size: 26rpx;}
-.fs30{font-size: 30rpx;}
-.fs32{font-size: 32rpx;}
-.fs34{font-size: 34rpx;}
-.fs40{font-size: 40rpx;}
 .ell,.ells,.ells3 {
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
+  /* display: -webkit-box; */
   -webkit-box-orient: vertical;
   word-spacing: pre-wrap;
 }
@@ -37,9 +39,9 @@ page{
 .relative {position: relative;}
 .fixed {position: fixed;}
 .flex {
-  display: flex;
-  align-content: flex-start;
-  align-items: center;
+display: flex;
+align-content: flex-start;
+align-items: center;
 }
 .flex.wrap {flex-wrap: wrap;}
 .flex.rowReverse{flex-direction: row-reverse;}
@@ -49,5 +51,3 @@ page{
 .flex.start {align-items: flex-start;}
 .flex.stretch {align-items: stretch;}
 .flex.alignEnd {align-items: flex-end;}
-
-

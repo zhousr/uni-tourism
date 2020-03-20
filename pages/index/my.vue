@@ -32,52 +32,111 @@
     </div>
     <div class="addGoods flex between">
       <p>共有商品：3件</p>
-      <div class="addGoods-btn"><text class="mr">+</text> 添加商品</div>
+      <div class="addGoods-btn" @click="popUpVisible = true"><text class="mr">+</text> 添加商品</div>
     </div>
     <div class="cate-box flex">
-      <p class="cate-li" v-for="(item,index) in nav" :key="index" :class="{'active':index === activeIndex}">{{item}}</p>
+      <p class="cate-li" v-for="(item,index) in arr" :key="index" 
+        :class="{'active':index === activeIndex}"
+        @click="tabCate(index)">{{item}}</p>
     </div>
     <div class="dividing-line relative"></div>
-    <view class="scenicSpot flex">
-      <view class="sceneryImg">
-        <image src="../../static/image/sceneryImg.jpg" mode="aspectFill"></image>
-        <text>限时特惠</text>
-      </view>
-      <view class="sceneryDesc">
-        <view class="desc1">
-          延吉起止·长白山北坡一日游，限时特价17800元。
+    <!-- 商品 -->
+    <view class="scenicSpot relative"  v-for="(item,index) in goodsArr" :key="index"
+        @touchstart="touchstart($event,index)" @touchmove="touchmove($event,index)" @touchend="touchend($event,index)"
+        :style="{'left':item.offsetX + 'px','transition':transition?'left 0.3s' :undefined}">
+      <div class="flex stretch between">
+        <view class="sceneryImg relative">
+          <image src="/static/logo.png" mode="aspectFill"></image>
+          <text>限时特惠</text>
         </view>
-        <view class="desc2">
-          延吉出发长白山北坡一日游纯玩自由行免费排队特惠出游
+        <view class="sceneryDesc">
+          <view class="desc1 ell">延吉起止·长白山北坡一日游，限时特价17800元。</view>
+          <view class="desc2 ells">延吉出发长白山北坡一日游纯玩自由行免费排队特惠出游延吉出发长白山北坡一日游纯玩自由行免费排队特惠出游</view>
+          <view class="desc3">
+            <text class="text1">分享</text>
+            <text class="text2">最高可获得<text>3.5</text>元佣金</text>
+          </view>
+          <view class="desc4">
+            <text class="text3">¥17800</text>
+            <text class="text4">¥19800</text>
+          </view>
         </view>
-        <view class="desc3">
-          <text class="text1">分享</text>
-          <text class="text2">最高可获得<text>3.5</text>元佣金</text>
-        </view>
-        <view class="desc4">
-          <text class="text3">¥17800</text>
-          <text class="text4">¥19800</text>
-        </view>
-      </view>
-  </view>
-  <pop-up/>
+      </div>
+      <div class="del-btn flex center" :class="{'moved':item.moved}">删除</div>
+    </view>
+    <!-- 弹窗 -->
+    <my-popup v-if="popUpVisible" :visible.sync="popUpVisible" />
   </div>
 </template>
 
 <script>
-import popUp from '../explainPopup/index'
+import myPopup from '../../components/myPopup'
   export default {
     data() {
       return {
         title: 'Hello',
-        nav:['全部','酒店','景区门票','景区门票','景区门票','景区门票'],
-        activeIndex:0
+        arr:['全部','酒店','景区门票','景区门票','景区门票','景区门票'],
+        activeIndex:0,
+        popUpVisible:false,
+        goodsArr:[{offsetX: 0, moved: false},{offsetX: 0, moved: false}],
+        startClientX:0,
+        transition:false,
+        isLeftoRight:false
       }
     },
     onLoad() {
     },
-    components:{popUp},
+    components:{myPopup},
     methods: {
+      tabCate(index){
+        this.activeIndex = index
+      },
+      touchstart(e,index){
+        this.startClientX = e.changedTouches[0].clientX
+      },
+      touchmove(e,index){
+        let n = e.changedTouches[0].clientX - this.startClientX
+        let offsetX = this.goodsArr[index].offsetX
+        const flag1 =!this.isLeftoRight && n<=0 && offsetX<=0 && offsetX>=-100
+        const flag2 = this.isLeftoRight && n>=0 && offsetX<=0 && offsetX>=-100
+        // if(offsetX<=100 || offsetX<=-100){
+        // console.log('终结   ',n,offsetX,flag1,flag2)
+        //   return ''
+        // }
+        if(flag1){
+          this.goodsArr[index].offsetX = n
+        }else if(flag2){
+          this.goodsArr[index].offsetX = 100 - n
+        }else{
+          console.log('else',n,offsetX,flag1,flag2,this.goodsArr[index].offsetX,this.isLeftoRight)
+        }
+        console.log(n,offsetX,flag1,flag2,this.goodsArr[index].offsetX,this.isLeftoRight)
+        this.transition = false
+        // this.goodsArr[index].moved = true
+      },
+      touchend(e,index){
+        uni.createSelectorQuery().select('.scenicSpot .del-btn').boundingClientRect(data => {
+          let offset = e.changedTouches[0].clientX - this.startClientX
+          let width = data.width
+          // this.goodsArr[index].offsetX = n
+          if(this.goodsArr[index].offsetX<0 && this.goodsArr[index].offsetX <60){
+          }
+          this.transition = true
+          // if(Math.abs(offset) >30 && offset<100){
+          //   this.offsetX = 100
+          // }else{
+          //   this.goodsArr[index].offsetX = -100
+          // }
+          if(offset> -30){
+            this.goodsArr[index].offsetX = 0
+            this.goodsArr[index].moved = false
+            this.isLeftoRight = true
+          }else{
+            this.goodsArr[index].offsetX = -100
+            this.isLeftoRight = true
+          }
+        }).exec();
+      },
     }
   }
 </script>
@@ -167,6 +226,7 @@ import popUp from '../explainPopup/index'
     width: 50vw;
     height: 4rpx;
     position: absolute;
+    z-index: 1;
     bottom: 0;
     border-radius: 5rpx;
     margin-bottom: 26rpx;
@@ -212,19 +272,14 @@ import popUp from '../explainPopup/index'
     border-radius: 12rpx;
     height: auto;
     margin: 25rpx auto;
-    padding: 23rpx 0 28rpx 27rpx;
-    overflow: hidden;
+    padding: 24rpx 28rpx;
+    overflow: visible;
     white-space: nowrap;
+    position: relative;
   }
-  .sceneryImg{
+  .sceneryImg>image{
     width: 240rpx;
     height: 208rpx;
-    position: relative;
-    flex:none;
-  }  
-  .sceneryImg>image{
-    width: 100%;
-    height: 100%;
     border-radius: 10rpx;
   }
   .sceneryImg>text{
@@ -238,22 +293,36 @@ import popUp from '../explainPopup/index'
     left: 0;
     padding: 5rpx 9rpx;
   }
+  .del-btn{
+    font-family: STHeiti;
+    font-size: 33rpx;
+    color: #FFFFFF;
+    letter-spacing: 8.68rpx;
+    background: #FF0000;
+    border-radius: 12rpx;
+    border-radius: 12rpx;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 200rpx;
+    right: -220rpx;
+    transition: right 0.3s;
+  }
+  .del-btn.moved{
+    right: -190rpx;
+    box-shadow: 0 4rpx 15rpx 0 #D8D8D8;
+  }
   .sceneryDesc{
-    flex:none;
-    width: calc(100% - 240rpx);
+    width: 380rpx;
     height: 208rpx;
-    padding-left: 30rpx;
-    padding-right: 27rpx;
     overflow: hidden;
   }
   .desc1{
+    width: 100%;
     height: 40rpx;
     font-family: STHeiti;
     font-size: 30rpx;
     color: #000000;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
   }
   .desc2{
     font-family: STHeiti;
@@ -269,7 +338,6 @@ import popUp from '../explainPopup/index'
     -webkit-box-orient:vertical;
     -webkit-line-clamp:2;
     white-space: pre-wrap;
-
   }
   .desc3>.text1{
     background-image: linear-gradient(180deg, #ECD9B3 0%, #D5A85E 56%, #EFC378 100%);
