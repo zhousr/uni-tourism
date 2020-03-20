@@ -43,7 +43,7 @@
     <!-- 商品 -->
     <view class="scenicSpot relative"  v-for="(item,index) in goodsArr" :key="index"
         @touchstart="touchstart($event,index)" @touchmove="touchmove($event,index)" @touchend="touchend($event,index)"
-        :style="{'left':item.offsetX + 'px','transition':transition?'left 0.3s' :undefined}">
+        :style="{'left':item.offsetX + 'px','transition':item.moving?'':'left 0.3s'}">
       <div class="flex stretch between">
         <view class="sceneryImg relative">
           <image src="/static/logo.png" mode="aspectFill"></image>
@@ -62,7 +62,7 @@
           </view>
         </view>
       </div>
-      <div class="del-btn flex center" :class="{'moved':item.moved}">删除</div>
+      <div class="del-btn flex center" :class="{'moving':item.moving}">删除</div>
     </view>
     <!-- 弹窗 -->
     <my-popup v-if="popUpVisible" :visible.sync="popUpVisible" />
@@ -78,7 +78,7 @@ import myPopup from '../../components/myPopup'
         arr:['全部','酒店','景区门票','景区门票','景区门票','景区门票'],
         activeIndex:0,
         popUpVisible:false,
-        goodsArr:[{offsetX: 0, moved: false},{offsetX: 0, moved: false}],
+        goodsArr:[{offsetX: 0, moving: false},{offsetX: 0, moving: false}],
         startClientX:0,
         transition:false,
         isLeftoRight:false,
@@ -106,26 +106,24 @@ import myPopup from '../../components/myPopup'
         let n = e.changedTouches[0].clientX - this.startClientX
         let offsetX = this.goodsArr[index].offsetX
         if(Math.abs(n)>=this.allOffset || Math.abs(n)>=this.allOffset) return
+        this.goodsArr[index].moving = true
         if(!this.isLeftoRight && n<= 0){
           this.goodsArr[index].offsetX = n
         }else if(this.isLeftoRight && n>= 0){
           this.goodsArr[index].offsetX = -this.allOffset + n
         }
         if(this.goodsArr[index].offsetX){
-          this.goodsArr[index].moved = true
         }
-        this.transition = false
       },
       touchend(e,index){
         let offset = e.changedTouches[0].clientX - this.startClientX
-        this.transition = true
         if(offset> -30){
           this.goodsArr[index].offsetX = 0
-          this.goodsArr[index].moved = false
+          this.goodsArr[index].moving = false
           this.isLeftoRight = false
         }else{
           this.goodsArr[index].offsetX = -this.allOffset
-          this.goodsArr[index].moved = true
+          this.goodsArr[index].moving = true
           this.isLeftoRight = true
         }
       },
@@ -300,7 +298,7 @@ import myPopup from '../../components/myPopup'
     right: -220rpx;
     transition: right 0.3s;
   }
-  .del-btn.moved{
+  .del-btn.moving{
     right: -200rpx;
     box-shadow: 0 4rpx 15rpx 0 #D8D8D8;
   }
