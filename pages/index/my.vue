@@ -43,7 +43,7 @@
     <!-- 商品 -->
     <view class="scenicSpot relative"  v-for="(item,index) in goodsArr" :key="index"
         @touchstart="touchstart($event,index)" @touchmove="touchmove($event,index)" @touchend="touchend($event,index)"
-        :style="{'left':item.offsetX + 'px','transition':transition?'':'left 0.5s'}">
+        :style="{'left':item.offsetX + 'px','transition':transition?'left 0.5s':''}">
       <div class="flex stretch between">
         <view class="sceneryImg relative">
           <image src="/static/logo.png" mode="aspectFill"></image>
@@ -62,7 +62,7 @@
           </view>
         </view>
       </div>
-      <div class="del-btn flex center" :class="{'moving': item.offsetX !==0}">删除</div>
+      <div class="del-btn flex center" :class="{'moving': -item.offsetX >= 5}">删除</div>
     </view>
     <!-- 弹窗 -->
     <my-popup v-if="popUpVisible" :visible.sync="popUpVisible" />
@@ -78,7 +78,7 @@ import myPopup from '../../components/myPopup'
         arr:['全部','酒店','景区门票','景区门票','景区门票','景区门票'],
         activeIndex:0,
         popUpVisible:false,
-        goodsArr:[{offsetX: 0},{offsetX: 0}],
+        goodsArr:[{offsetX: 0},{offsetX: 0},{offsetX: 0},{offsetX: 0},{offsetX: 0},{offsetX: 0}],
 
         startClientX:0,
         transition:false,
@@ -91,7 +91,7 @@ import myPopup from '../../components/myPopup'
     mounted(){
       this.$nextTick(()=>{
         uni.createSelectorQuery().select('.scenicSpot .del-btn').boundingClientRect(data => {
-          this.allOffset = data.width - data.width * (200 - 190) / 200 * 2
+          this.allOffset = (data.width - data.width * (200 - 190) / 200 * 2) - 1
         }).exec();
       })
     },
@@ -101,10 +101,10 @@ import myPopup from '../../components/myPopup'
         this.activeIndex = index
       },
       touchstart(e,index){
+        this.transition = false
         this.startClientX = e.changedTouches[0].clientX
       },
       touchmove(e,index){
-        this.transition = false
         let n = e.changedTouches[0].clientX - this.startClientX
         let offsetX = this.goodsArr[index].offsetX
         if(Math.abs(n)>=this.allOffset || Math.abs(n)>=this.allOffset) return
@@ -117,7 +117,7 @@ import myPopup from '../../components/myPopup'
       touchend(e,index){
         this.transition = true
         let n = e.changedTouches[0].clientX - this.startClientX
-        if(!this.isLeftoRight && -n<25 || this.isLeftoRight && n>25){
+        if(!this.isLeftoRight && -n<15 || this.isLeftoRight && n>15){
           this.goodsArr[index].offsetX = 0
           this.isLeftoRight = false
         }else{
