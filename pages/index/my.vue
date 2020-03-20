@@ -42,9 +42,9 @@
     <div class="dividing-line relative"></div>
     <!-- 商品 -->
     <view class="scenicSpot relative"  v-for="(item,index) in goodsArr" :key="index"
-        @touchstart="touchstart($event,index)" @touchmove="touchmove($event,index)" @touchend="touchend($event,index)"
+        @touchstart="touchstart($event,index)"
         :style="{'left':item.offsetX + 'px','transition':item.moving?'':'left 0.3s'}">
-      <div class="flex stretch between">
+      <div class="flex stretch between" @touchmove="touchmove($event,index)" @touchend="touchend($event,index)">
         <view class="sceneryImg relative">
           <image src="/static/logo.png" mode="aspectFill"></image>
           <text>限时特惠</text>
@@ -79,6 +79,7 @@ import myPopup from '../../components/myPopup'
         activeIndex:0,
         popUpVisible:false,
         goodsArr:[{offsetX: 0, moving: false},{offsetX: 0, moving: false}],
+
         startClientX:0,
         transition:false,
         isLeftoRight:false,
@@ -90,7 +91,7 @@ import myPopup from '../../components/myPopup'
     mounted(){
       this.$nextTick(()=>{
         uni.createSelectorQuery().select('.scenicSpot .del-btn').boundingClientRect(data => {
-          this.allOffset = data.width -5
+          this.allOffset = data.width - data.width * (200 - 190) / 200 * 2
         }).exec();
       })
     },
@@ -112,12 +113,9 @@ import myPopup from '../../components/myPopup'
         }else if(this.isLeftoRight && n>= 0){
           this.goodsArr[index].offsetX = -this.allOffset + n
         }
-        if(this.goodsArr[index].offsetX){
-        }
       },
       touchend(e,index){
-        let offset = e.changedTouches[0].clientX - this.startClientX
-        if(offset> -30){
+        if(e.changedTouches[0].clientX - this.startClientX > -25){
           this.goodsArr[index].offsetX = 0
           this.goodsArr[index].moving = false
           this.isLeftoRight = false
@@ -212,21 +210,15 @@ import myPopup from '../../components/myPopup'
   }
   .dividing-line::before,.dividing-line::after{
     content:'';
-    display: block;
+    display: inline-block;
     width: 50vw;
     height: 4rpx;
-    position: absolute;
-    z-index: 1;
-    bottom: 0;
-    border-radius: 5rpx;
     margin-bottom: 26rpx;
   }
   .dividing-line::before{
-    left: 0;
     background-image: linear-gradient(270deg, #FFAE00 0%, #FFFFFF 100%);
   }
   .dividing-line::after{
-    right: 0;
     background-image: linear-gradient(90deg, #FFAE00 0%, #FFFFFF 100%);
   }
   .cate-li{
@@ -299,7 +291,7 @@ import myPopup from '../../components/myPopup'
     transition: right 0.3s;
   }
   .del-btn.moving{
-    right: -200rpx;
+    right: -190rpx;
     box-shadow: 0 4rpx 15rpx 0 #D8D8D8;
   }
   .sceneryDesc{
