@@ -42,7 +42,7 @@
     <div class="dividing-line relative"></div>
     <!-- 商品 -->
     <view class="scenicSpot relative"  v-for="(item,index) in goodsArr" :key="index"
-        @touchstart="touchstart($event,index)" @touchmove="touchmove($event,index)" @touchend="touchend($event,index)"
+        @touchstart="touchstart($event,item)" @touchmove="touchmove($event,item)" @touchend="touchend($event,item)"
         :style="{'left':item.offsetX + 'px','transition':transition?'left 0.5s':''}">
       <div class="flex stretch between">
         <view class="sceneryImg relative">
@@ -74,7 +74,6 @@ import myPopup from '../../components/myPopup'
   export default {
     data() {
       return {
-        title: 'Hello',
         arr:['全部','酒店','景区门票','景区门票','景区门票','景区门票'],
         activeIndex:0,
         popUpVisible:false,
@@ -100,29 +99,27 @@ import myPopup from '../../components/myPopup'
       tabCate(index){
         this.activeIndex = index
       },
-      touchstart(e,index){
+      touchstart(e,item){
         this.transition = false
         this.startClientX = e.changedTouches[0].clientX
       },
-      touchmove(e,index){
+      touchmove(e,item){
         let n = e.changedTouches[0].clientX - this.startClientX
-        let offsetX = this.goodsArr[index].offsetX
-        if(Math.abs(n)>=this.allOffset || Math.abs(n)>=this.allOffset) return
-        if(!this.isLeftoRight && n<= 0){
-          this.goodsArr[index].offsetX = n
-        }else if(this.isLeftoRight && n>= 0){
-          this.goodsArr[index].offsetX = -this.allOffset + n
+        if(!item.isLeftoRight && n< 0 && n>-this.allOffset){
+          item.offsetX = n
+        }else if(item.isLeftoRight && n> 0 && n< this.allOffset){
+          item.offsetX = - this.allOffset + n
         }
       },
-      touchend(e,index){
+      touchend(e,item){
         this.transition = true
         let n = e.changedTouches[0].clientX - this.startClientX
-        if(!this.isLeftoRight && -n<15 || this.isLeftoRight && n>15){
-          this.goodsArr[index].offsetX = 0
-          this.isLeftoRight = false
+        if(!item.isLeftoRight && -n<15 || item.isLeftoRight && n>15){
+          item.offsetX = 0
+          item.isLeftoRight = false
         }else{
-          this.goodsArr[index].offsetX = -this.allOffset
-          this.isLeftoRight = true
+          item.offsetX = - this.allOffset
+          item.isLeftoRight = true
         }
       },
     }
@@ -146,6 +143,8 @@ import myPopup from '../../components/myPopup'
     line-height: 49rpx;
     font-size: 35rpx;
     color: rgba(0,0,0,0.85);
+    display: block;
+    margin-bottom: 8rpx;
   }
   .heaer-userGrade-box{
     background-image: linear-gradient(95deg, #7E7A7B 0%, #292222 99%);
@@ -200,7 +199,7 @@ import myPopup from '../../components/myPopup'
   }
 
   .cate-box{
-    padding: 24rpx;
+    padding: 24rpx 24px 0;
     overflow-x: scroll;
     white-space: nowrap;
     position: relative;
@@ -208,18 +207,10 @@ import myPopup from '../../components/myPopup'
   .cate-box::-webkit-scrollbar {
     display: none;
   }
-  .dividing-line::before,.dividing-line::after{
-    content:'';
-    display: inline-block;
-    width: 50vw;
+  .dividing-line{
     height: 4rpx;
     margin-bottom: 26rpx;
-  }
-  .dividing-line::before{
-    background-image: linear-gradient(270deg, #FFAE00 0%, #FFFFFF 100%);
-  }
-  .dividing-line::after{
-    background-image: linear-gradient(90deg, #FFAE00 0%, #FFFFFF 100%);
+    background-image: linear-gradient(270deg, #FFFFFF 0%, #FFAE00 50%, #FFFFFF 100%);
   }
   .cate-li{
     padding: 0 18rpx 30rpx;
@@ -353,10 +344,5 @@ import myPopup from '../../components/myPopup'
     font-size: 30rpx;
     color: rgba(0,0,0,0.50);
     margin-left: 33rpx;
-  }
-  .delete{
-    height: 100%;
-    background: #FF0000;
-    flex:none;
   }
 </style>
